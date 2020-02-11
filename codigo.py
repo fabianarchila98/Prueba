@@ -1,8 +1,15 @@
 import scipy.io as sio
 import matplotlib.pyplot as plt
 import imageio
+import Segment
+from skimage import io, color
+from sklearn.mixture import GaussianMixture as GMM
+from sklearn.cluster import AgglomerativeClustering as AC
+import numpy as np
+from sklearn import metrics
 
 img = 'BSDS_small/train/22090.jpg'
+rgb = io.imread(img)
 # plt.imshow(imageio.imread(img))
 # plt.show()
 
@@ -16,38 +23,32 @@ print(segm.shape)
 # plt.colorbar()
 # plt.show()
 
-def unique(list1):
-
-    # intilize a null list
-    unique_list = []
-
-    # traverse for all elements
-    for x in list1:
-        # check if exists in unique_list or not
-        if x not in unique_list:
-            unique_list.append(x)
-    return unique_list
-
-ll=segm.reshape(-1,1)
-
-aa=unique(ll)
-print(aa[1])
+labels=Segment.k_means(2,rgb)
+labels_r=labels.reshape(-1,1)
+segm_r=segm.reshape(-1,1)
+labels_u=np.unique(labels_r)
+segm_u=np.unique(segm_r)
 
 
-def most_frequent(List):
-    counter = 0
-    num = List[0]
+# for i in segm_u:
+#     valor=0
+#     count=np.zeros(len(labels_u))
+#     count_i=0
+#     for j in range(0,len(segm_r)):
+#         if segm_r[j]==i:
+#             count[labels_r[j]]+=1
+#     print(count)
+#     a=np.amax(count)/np.sum(count)
+#     print(a)
 
-    for i in List:
-        curr_frequency = List.count(i)
-        if(curr_frequency> counter):
-            counter = curr_frequency
-            num = i
+segm_tr=segm_r=segm.reshape(1,-1)
+labels_tr=labels.reshape(1,-1)
+# print(metrics.adjusted_rand_score(segm_tr[0], labels_tr[0]))
+print(metrics.homogeneity_score(segm_tr[0], labels_tr[0]))
 
-    return num ,counter
-
-List = [2, 1, 2, 2, 1, 3]
-print(most_frequent(List))
+print(len(segm_r))
+print(len(labels_r))
+# print(np.zeros(len(labels_u))[0])
 
 # #Boundaries from third human
 # segm=gt['groundTruth'][0,2][0][0]['Boundaries']

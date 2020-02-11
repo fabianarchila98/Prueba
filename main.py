@@ -1,3 +1,4 @@
+
 def imshow(img, seg, title='Image'):
     import matplotlib.pyplot as plt
     plt.imshow(img, cmap=plt.get_cmap('gray'))
@@ -14,6 +15,7 @@ def groundtruth(img_file):
     gt=sio.loadmat(img_file.replace('jpg', 'mat'))
     segm=gt['groundTruth'][0,5][0][0]['Segmentation']
     imshow(img, segm, title='Groundtruth')
+    return segm
 
 def check_dataset(folder):
     import os
@@ -38,6 +40,16 @@ if __name__ == '__main__':
     check_dataset(opts.img_file.split('/')[0])
 
     img = imageio.imread(opts.img_file)
-    seg = segmentByClustering(rgbImage=img, colorSpace=opts.color, clusteringMethod=opts.method, numberOfClusters=opts.k)
-    imshow(img, seg, title='Prediction')
-    groundtruth(opts.img_file)
+    labels = segmentByClustering(rgbImage=img, colorSpace=opts.color, clusteringMethod=opts.method, numberOfClusters=opts.k)
+    imshow(img, labels, title='Prediction')
+    segm=groundtruth(opts.img_file)
+    import numpy as np
+    from sklearn import metrics
+    labels_r=labels.reshape(-1,1)
+    segm_r=segm.reshape(-1,1)
+    labels_u=np.unique(labels_r)
+    segm_u=np.unique(segm_r)
+    segm_tr=segm_r=segm.reshape(1,-1)
+    labels_tr=labels.reshape(1,-1)
+    print('Clustering metric:')
+    print(metrics.homogeneity_score(segm_tr[0], labels_tr[0]))

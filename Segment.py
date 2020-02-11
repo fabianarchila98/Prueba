@@ -85,10 +85,10 @@ def watershed(rgb):
 
 
 def segmentByClustering(rgbImage, colorSpace, clusteringMethod, numberOfClusters):
-
+    percent=50
     if clusteringMethod=='hierarchical':
         if colorSpace=='rgb':
-            scale_percent = 40 # percent of original size
+            scale_percent = percent # percent of original size
             width = int(rgbImage.shape[1] * scale_percent / 100)
             height = int(rgbImage.shape[0] * scale_percent / 100)
             dim = (width, height)
@@ -96,7 +96,7 @@ def segmentByClustering(rgbImage, colorSpace, clusteringMethod, numberOfClusters
             segmentation=hierarchical(numberOfClusters,resized)
         elif colorSpace=='lab':
             lab_image=color.rgb2lab(rgbImage)
-            scale_percent = 40 # percent of original size
+            scale_percent = percent # percent of original size
             width = int(lab_image.shape[1] * scale_percent / 100)
             height = int(lab_image.shape[0] * scale_percent / 100)
             dim = (width, height)
@@ -104,14 +104,14 @@ def segmentByClustering(rgbImage, colorSpace, clusteringMethod, numberOfClusters
             segmentation=hierarchical(numberOfClusters,resized)
         elif colorSpace=='hsv':
             hsv_image=color.rgb2hsv(rgbImage)
-            scale_percent = 40 # percent of original size
+            scale_percent = percent # percent of original size
             width = int(hsv_image.shape[1] * scale_percent / 100)
             height = int(hsv_image.shape[0] * scale_percent / 100)
             dim = (width, height)
             resized = cv2.resize(hsv_image, dim, interpolation = cv2.INTER_AREA)
             segmentation=hierarchical(numberOfClusters,resized)
         elif colorSpace=='rgb+xy':
-            scale_percent = 40 # percent of original size
+            scale_percent = percent # percent of original size
             width = int(rgbImage.shape[1] * scale_percent / 100)
             height = int(rgbImage.shape[0] * scale_percent / 100)
             dim = (width, height)
@@ -120,7 +120,7 @@ def segmentByClustering(rgbImage, colorSpace, clusteringMethod, numberOfClusters
             segmentation=hierarchical(numberOfClusters,xy_sum)
         elif colorSpace=='lab+xy':
             lab_image=color.rgb2lab(rgbImage)
-            scale_percent = 40 # percent of original size
+            scale_percent = percent # percent of original size
             width = int(lab_image.shape[1] * scale_percent / 100)
             height = int(lab_image.shape[0] * scale_percent / 100)
             dim = (width, height)
@@ -130,7 +130,7 @@ def segmentByClustering(rgbImage, colorSpace, clusteringMethod, numberOfClusters
 
         elif colorSpace=='hsv+xy':
             hsv_image=color.rgb2hsv(rgbImage)
-            scale_percent = 40 # percent of original size
+            scale_percent = percent # percent of original size
             width = int(hsv_image.shape[1] * scale_percent / 100)
             height = int(hsv_image.shape[0] * scale_percent / 100)
             dim = (width, height)

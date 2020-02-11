@@ -139,7 +139,9 @@ def segmentByClustering(rgbImage, colorSpace, clusteringMethod, numberOfClusters
             segmentation=hierarchical(numberOfClusters,xy_sum)
 
     else:
-
+        if clusteringMethod=='watershed':
+            image=rgbImage
+            segmentation=watershed(image)
         if colorSpace=='rgb':
             image=rgbImage
         elif colorSpace=='lab':
@@ -159,8 +161,6 @@ def segmentByClustering(rgbImage, colorSpace, clusteringMethod, numberOfClusters
             segmentation=k_means(numberOfClusters,image)
         elif clusteringMethod=='gmm':
             segmentation=gmm(numberOfClusters,image)
-        elif clusteringMethod=='watershed':
-            segmentation=watershed(image)
 
 
 

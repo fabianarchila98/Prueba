@@ -9,7 +9,7 @@ from sklearn.cluster import AgglomerativeClustering as AC
 import numpy as np
 from sklearn import metrics
 
-img = 'BSDS_small/train/22090.jpg'
+img = 'BSDS_small/train/2092.jpg'
 rgb = io.imread(img)
 # plt.imshow(imageio.imread(img))
 # plt.show()
@@ -31,6 +31,7 @@ dim = (width, height)
 resized = cv2.resize(rgb, dim, interpolation = cv2.INTER_AREA)
 
 labels=Segment.hierarchical(3, resized)
+print(labels.shape)
 labels_r=labels.reshape(-1,1)
 segm_r=segm.reshape(-1,1)
 labels_u=np.unique(labels_r)
@@ -55,7 +56,7 @@ segm_u=np.unique(segm_r)
 #
 # print(len(segm_r))
 # print(len(labels_r))
-# aa=segm.shape
+aa=segm.shape
 # c=np.copy(segm)
 # c.resize((int(aa[0]*0.4),int(aa[1]*0.4)))
 # print(segm)
@@ -70,11 +71,11 @@ segm_u=np.unique(segm_r)
 
 cc=np.copy(segm)
 
-for i in range(0,int(aa[0]/2)):
-    cc=np.delete(cc,1+i,0)
+for i in range(0,int(aa[0]/2)+1):
+    cc=np.delete(cc,i,0)
 
-for i in range(0,int(aa[1]/2)):
-    cc=np.delete(cc,1+i,1)
+for i in range(0,int(aa[1]/2)+1):
+    cc=np.delete(cc,i,1)
 print(cc)
 print(cc.shape)
 
@@ -82,8 +83,10 @@ plt.imshow(cc, cmap=plt.get_cmap('hot'))
 plt.colorbar()
 plt.show()
 # print(u)
-
-
+if labels.shape==cc.shape :
+    print('si')
+segm=cc
+print(segm.shape)
 # a=segm.resize()
 # print(np.zeros(len(labels_u))[0])
 

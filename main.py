@@ -44,6 +44,17 @@ if __name__ == '__main__':
     imshow(img, labels, title='Prediction')
     segm=groundtruth(opts.img_file)
     import numpy as np
+    if labels.shape!=segm.shape:
+        aa=segm.shape
+        cc=np.copy(segm)
+        for i in range(0,int(aa[0]/2)+1):
+            cc=np.delete(cc,i,0)
+
+        for i in range(0,int(aa[1]/2)+1):
+            cc=np.delete(cc,i,1)
+        segm=cc
+
+
     from sklearn import metrics
     labels_r=labels.reshape(-1,1)
     segm_r=segm.reshape(-1,1)
